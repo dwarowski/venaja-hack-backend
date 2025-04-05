@@ -72,7 +72,7 @@ fetch_jwks() {
 # Clean if previously started
 echo -e "${YELLOW}Trying removing volumes${NC}"
 cd ./docker || { echo -e "${RED}Error: Could not switch to docker directory.${NC}"; exit 1; }
-docker compose -f docker-compose-quick-jwt.yml down -v
+docker-compose -f docker-compose-quick-jwt.yml down -v
 check_success "Failed to remove volumes"
 cd ..
 
@@ -165,7 +165,7 @@ echo -e "${YELLOW}[Phase 1] Starting core containers (postgres, keycloak-db, key
 cd ./docker || { echo -e "${RED}Error: Could not switch to docker directory.${NC}"; exit 1; }
 
 # Start core services which are essential for Keycloak availability
-docker compose -f docker-compose-quick-jwt.yml --env-file .env up -d postgres keycloak-db keycloak
+docker-compose -f docker-compose-quick-jwt.yml --env-file .env up -d postgres keycloak-db keycloak
 check_success "Core containers failed to start"
 echo -e "${GREEN}Core containers started successfully.${NC}"
 
@@ -183,7 +183,7 @@ echo -e "${GREEN}JWKS fetched successfully.${NC}"
 # -------------------------------------------------------
 echo -e "${YELLOW}[Phase 3] Starting dataspace-builder and dataspace-app containers...${NC}"
 cd ../../../docker || { echo -e "${RED}Error: Could not switch back to docker directory.${NC}"; exit 1; }
-docker compose -f docker-compose-quick-jwt.yml --env-file .env up -d dataspace-builder dataspace-app
+docker-compose -f docker-compose-quick-jwt.yml --env-file .env up -d dataspace-builder dataspace-app
 check_success "Failed to start dataspace-builder and dataspace-app"
 echo -e "${GREEN}Remaining containers started successfully.${NC}"
 
@@ -211,5 +211,5 @@ for i in {1..10}; do
 done
 
 echo -e "${RED}Application failed to start. Check logs:${NC}"
-docker compose logs dataspace-app
+docker-compose logs dataspace-app
 exit 1
